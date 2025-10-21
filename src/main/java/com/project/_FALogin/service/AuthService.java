@@ -7,6 +7,8 @@ import com.project._FALogin.repo.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+
 @Service
 @RequiredArgsConstructor
 public class AuthService {
@@ -29,7 +31,16 @@ public class AuthService {
         if ("sms".equalsIgnoreCase(channel) && user.getPhone()!=null) {
             smsService.sendSms(user.getPhone(), message);
         } else {
-            emailService.sendSimpleEmail(user.getUsername(), "Your 2FA code", message);
+            try {
+                emailService.sendEmail(
+                        user.getUsername(),
+                        "Your 2FA Verification Code",
+                        "Your verification code is: " + code
+                );
+            } catch (IOException e) {
+                e.printStackTrace();
+                return false;
+            }
         }
         return true;
     }
