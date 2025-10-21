@@ -9,7 +9,6 @@ import com.sendgrid.helpers.mail.objects.Content;
 import com.sendgrid.helpers.mail.objects.Email;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -17,9 +16,12 @@ import java.io.IOException;
 @Service @Log4j2
 @RequiredArgsConstructor
 public class EmailService {
+    private final String sendGridApiKey;
 
-    @Value("${sendgrid.api-key}")
-    private String sendGridApiKey;
+    // Read API key from environment variable
+    public EmailService() {
+        this.sendGridApiKey = System.getenv("SENDGRID_API_KEY");
+    }
 
     public void sendEmail(String to, String subject, String contentText) throws IOException {
         Email from = new Email("emadekuncoro@gmail.com"); // ganti dengan domain kamu
@@ -34,7 +36,6 @@ public class EmailService {
             request.setEndpoint("mail/send");
             request.setBody(mail.build());
             Response response = sg.api(request);
-
             System.out.println("Email sent: " + response.getStatusCode());
         } catch (IOException ex) {
             log.error("fail to send email to {}", to, ex);
