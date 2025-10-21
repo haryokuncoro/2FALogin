@@ -15,11 +15,11 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 @RequiredArgsConstructor
 public class AuthController {
     @Autowired
-    AuthService authService;
+    private final AuthService authService;
     private final JwtUtil jwtUtil;
 
     @PostMapping("/login")

@@ -18,7 +18,7 @@ public class SecurityConfig {
         // 2. Configure authorization rules using the lambda DSL (replaces .authorizeHttpRequests())
         http.authorizeHttpRequests(auth -> auth
                 .requestMatchers(
-                        "/auth/**",
+                        "/api/auth/**",
                         "/v3/api-docs/**",
                         "/swagger-ui/**",
                         "/swagger-ui.html"
