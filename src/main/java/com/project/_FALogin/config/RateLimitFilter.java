@@ -5,6 +5,7 @@ import io.github.bucket4j.Bandwidth;
 import io.github.bucket4j.Bucket;
 import io.github.bucket4j.Refill;
 import jakarta.servlet.*;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Component;
 
@@ -29,17 +30,34 @@ public class RateLimitFilter implements Filter {
     }
 
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+            throws IOException, ServletException {
+
+        HttpServletRequest req = (HttpServletRequest) request;
+        HttpServletResponse resp = (HttpServletResponse) response;
+
+        String path = req.getRequestURI();
+
+        // ✅ Skip rate limiting for Swagger and OpenAPI endpoints
+        if (path.startsWith("/swagger-ui") ||
+                path.startsWith("/v3/api-docs") ||
+                path.startsWith("/swagger-resources") ||
+                path.equals("/swagger-ui.html")) {
+            chain.doFilter(request, response);
+            return;
+        }
+
+        // 🔒 Apply rate limiting for other endpoints
         String ip = request.getRemoteAddr();
         Bucket bucket = cache.getIfPresent(ip);
         if (bucket == null) {
             bucket = newBucket();
             cache.put(ip, bucket);
         }
+
         if (bucket.tryConsume(1)) {
             chain.doFilter(request, response);
         } else {
-            HttpServletResponse resp = (HttpServletResponse) response;
             resp.setStatus(429);
             resp.getWriter().write("Too many requests - try later");
         }
