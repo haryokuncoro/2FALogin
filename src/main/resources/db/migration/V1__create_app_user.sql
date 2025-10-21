@@ -1,0 +1,8 @@
+CREATE TABLE app_user (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    fullname VARCHAR(255),
+    phone VARCHAR(50),
+    enabled BOOLEAN DEFAULT TRUE
+);
