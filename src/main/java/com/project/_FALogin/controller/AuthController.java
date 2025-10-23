@@ -1,6 +1,7 @@
 package com.project._FALogin.controller;
 
 import com.project._FALogin.dto.LoginRequest;
+import com.project._FALogin.dto.RegisterRequest;
 import com.project._FALogin.dto.VerifyRequest;
 import com.project._FALogin.service.AuthService;
 import com.project._FALogin.util.JwtUtil;
@@ -24,7 +25,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest req) {
-        boolean started = authService.startLogin(req.getUsername(), req.getPassword(), req.getChannel());
+        boolean started = authService.startLogin(req.getUsername(), req.getPassword(), req.getChannel().toString());
         if (!started) return ResponseEntity.status(401).body("Invalid credentials");
         return ResponseEntity.ok("2FA code sent");
     }
@@ -38,7 +39,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody LoginRequest req) {
+    public ResponseEntity<?> register(@RequestBody RegisterRequest req) {
         authService.register(req);
         return ResponseEntity.ok("User registered successfully");
     }
