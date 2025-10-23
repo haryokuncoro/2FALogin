@@ -14,13 +14,13 @@ import java.util.HashMap;
 @Service @Slf4j
 public class SmsService {
 
-    @Value("${twilio.accountSid}")
+    @Value("${twilio_accountSid}")
     private String accountSid;
 
-    @Value("${twilio.authToken}")
+    @Value("${twilio_authToken}")
     private String authToken;
 
-    @Value("${twilio.fromNumber}")
+    @Value("${twilio_fromNumber}")
     private String fromNumber;
 
     @PostConstruct
@@ -31,17 +31,25 @@ public class SmsService {
     }
 
     public void sendWhatsapp(String to, String content) {
-        Message message = Message.creator(
-                                new PhoneNumber("whatsapp:"+fromNumber),
-                                new PhoneNumber("whatsapp:"+to),
-                                (String) null
-                        )
-                        .setContentSid("HX229f5a04fd0510ce1b071852155d3e75")
-                        .setContentVariables(new JSONObject(new HashMap<String, Object>() {{
-                            put("1", content);
-                        }}).toString())
-                        .create();
+        String from = "whatsapp:"+fromNumber;
+        to = "whatsapp:"+to;
+        try {
 
-        log.info("send wa to ={} sid={}", to, message.getSid());
+            Message message = Message.creator(
+                            new PhoneNumber(to),
+                            new PhoneNumber(from),
+                            (String) null
+                    )
+                    .setContentSid("HX229f5a04fd0510ce1b071852155d3e75")
+                    .setContentVariables(new JSONObject(new HashMap<String, Object>() {{
+                        put("1", content);
+                    }}).toString())
+                    .create();
+
+            log.info("send wa to ={} sid={}", to, message.getSid());
+        }catch (Exception e){
+            log.error("fail to send wa {} {} {} {}", accountSid, authToken, fromNumber, to, e);
+        }
+
     }
 }
