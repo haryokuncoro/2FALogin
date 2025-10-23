@@ -1,6 +1,7 @@
 package com.project._FALogin.service;
 
 import com.project._FALogin.config.SecurityConfig;
+import com.project._FALogin.dto.LoginRequest;
 import com.project._FALogin.dto.RegisterRequest;
 import com.project._FALogin.entity.AppUser;
 import com.project._FALogin.repo.UserRepository;
@@ -20,7 +21,7 @@ public class AuthService {
     private final SmsService smsService;
     private final SecurityConfig securityConfig;
 
-    public boolean startLogin(String username, String password, String channel) {
+    public boolean startLogin(String username, String password, LoginRequest.Channel channel) {
         var userOpt = userRepository.findByUsername(username);
         if (userOpt.isEmpty()) return false;
         AppUser user = userOpt.get();
@@ -29,7 +30,7 @@ public class AuthService {
         String code = twoFactorService.generateCode(username);
         String message = "Your 2FA code is: " + code + " (valid 5 minutes)";
 
-        if ("sms".equalsIgnoreCase(channel) && user.getPhone()!=null) {
+        if (channel.equals(LoginRequest.Channel.SMS) && user.getPhone()!=null) {
             smsService.sendSms(user.getPhone(), message);
         } else {
             try {
