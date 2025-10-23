@@ -1,6 +1,6 @@
 # 2FALogin
 
-**2FALogin** is a Java application implementing **Two-Factor Authentication (2FA)** with **OTP** delivered via **email (SendGrid)** and **SMS (Twilio)**. It can be used as a reference for integrating 2FA into login systems.
+**2FALogin** is a Java application implementing **Two-Factor Authentication (2FA)** with **OTP** delivered via **email (SendGrid)** and **WhatsApp (Twilio)**. It can be used as a reference for integrating 2FA into login systems.
 
 ## Key Features
 
@@ -17,7 +17,7 @@
 
 1. User logs in with **username/password**.
 2. The system validates the credentials.
-3. The system determines the OTP delivery channel (email or SMS).
+3. The system determines the OTP delivery channel (email or WhatsApp).
 4. OTP is sent via:
 
    * **Email:** using **SendGrid API**
@@ -55,7 +55,7 @@ spring.datasource.password=your_password
 SENDGRID_API_KEY=YOUR_SENDGRID_API_KEY
 SENDGRID_FROM_EMAIL=your_email@example.com
 
-# Twilio SMS Config
+# Twilio WA Config
 twilio_accountSid=YOUR_TWILIO_SID
 twilio_authToken=YOUR_TWILIO_TOKEN
 twilio_fromNumber=YOUR_TWILIO_NUMBER
