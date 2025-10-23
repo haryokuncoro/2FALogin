@@ -25,7 +25,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest req) {
-        boolean started = authService.startLogin(req.getUsername(), req.getPassword(), req.getChannel().toString());
+        boolean started = authService.startLogin(req.getUsername(), req.getPassword(), req.getChannel());
         if (!started) return ResponseEntity.status(401).body("Invalid credentials");
         return ResponseEntity.ok("2FA code sent");
     }
