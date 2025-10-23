@@ -9,7 +9,7 @@
 * OTP delivery channels:
 
   * **Email** via **SendGrid API**
-  * **SMS** via **Twilio API**
+  * **WhatsApp** via **Twilio API**
 * Built with Gradle
 * Docker support for easy deployment
 
@@ -21,7 +21,7 @@
 4. OTP is sent via:
 
    * **Email:** using **SendGrid API**
-   * **SMS:** using **Twilio API**
+   * **WhatsApp:** using **Twilio API**
 5. User enters the OTP to complete the login process.
 
 ## Prerequisites
@@ -29,7 +29,7 @@
 * Java 17+
 * Gradle
 * **SendGrid account** for email delivery
-* **Twilio account** for SMS delivery
+* **Twilio account** for WhatsApp delivery
 * Docker (optional)
 
 ## Installation
@@ -52,13 +52,13 @@ spring.datasource.username=root
 spring.datasource.password=your_password
 
 # SendGrid Email Config
-sendgrid.api.key=YOUR_SENDGRID_API_KEY
-sendgrid.from.email=your_email@example.com
+SENDGRID_API_KEY=YOUR_SENDGRID_API_KEY
+SENDGRID_FROM_EMAIL=your_email@example.com
 
 # Twilio SMS Config
-twilio.account_sid=YOUR_TWILIO_SID
-twilio.auth_token=YOUR_TWILIO_TOKEN
-twilio.phone_number=YOUR_TWILIO_NUMBER
+twilio_accountSid=YOUR_TWILIO_SID
+twilio_authToken=YOUR_TWILIO_TOKEN
+twilio_fromNumber=YOUR_TWILIO_NUMBER
 ```
 
 ### 3. Build & Run
