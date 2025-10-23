@@ -31,7 +31,7 @@ public class AuthService {
         String message = "Your 2FA code is: " + code + " (valid 5 minutes)";
 
         if (channel.equals(LoginRequest.Channel.SMS) && user.getPhone()!=null) {
-            smsService.sendSms(user.getPhone(), message);
+            smsService.sendWhatsapp(user.getPhone(), message);
         } else {
             try {
                 emailService.sendEmail(
